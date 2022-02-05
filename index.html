@@ -1,0 +1,48 @@
+<html>
+  <head>
+    <title>Moralis</title>
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <script src="https://unpkg.com/moralis/dist/moralis.js"></script>
+  </head>
+
+  <body>
+    <h1>Moralis Login</h1>
+
+    <button onclick="login()" id="login">Login</button>
+    <button onclick="logOut()" id="logout">Logout</button>
+    <button onclick="searchNFT()" id="searchnftbutton">Search NFT</button>
+
+    <div id="output body">
+
+    </div>
+
+
+    <script>
+       const serverUrl = "https://84eaxtbsqopt.usemoralis.com:2053/server";
+       const appId = "fIWX08dajsrc0PWRwOQrDC6zHvSA8gIfbPh7punG";
+       Moralis.start({ serverUrl, appId });
+
+      // add from here down
+      async function login() {
+        let user = Moralis.User.current();
+        if (!user) {
+          user = await Moralis.authenticate();
+        }
+        console.log("logged in user:", user);
+      }
+
+      async function logOut() {
+        await Moralis.User.logOut();
+        console.log("logged out");
+      }
+       async function searchNFT(){
+            const options = { q: "apes", filter: "name" };
+            const apes = await Moralis.Web3API.token.searchNFTs(options);
+            console.log(apes);
+            document.getElementById("output body").innerHTML = apes;
+        }
+       
+    </script>
+
+  </body>
+</html>
