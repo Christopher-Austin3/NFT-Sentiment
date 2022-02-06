@@ -1,18 +1,23 @@
 import tensorflow as tf
 from tensorflow import keras
-# import numpy as np
+import numpy as np
 import matplotlib.pyplot as plt
 
 
-def create_ai(x_train, y_train, x_test, y_test):
+def create_ai(x_train, y_train, x_test=[], y_test=[]):
     x_train = normalise(slices_from_array(x_train))
     y_train = normalise(slices_from_array(y_train))
     x_test = normalise(slices_from_array(x_test))
     y_test = normalise(slices_from_array(y_test))
-    # params = initialise_parameters()
-    # forward_prop(X, params)
+    params = learn(x_train, y_train, x_test, y_test)
+    param_pairs = list(params.values())
+    with open("Parameters.npy", "wb") as f:
+        for p in param_pairs:
+            np.save(f, p.numpy())
 
 
+
+# trains gradients of network. Tests to be added.
 def learn(x_train, y_train, x_test, y_test, learning_rate=0.001,
           epochs=500, minibatch_size=8):
     params = initialise_parameters()
@@ -50,7 +55,6 @@ def getparams(params):
             params['W3'], params['B3'], params['W4'], params['B4'])
 
 
-# return Z4 not A4, calc lofits and reduce mean
 def forward_prop(X, params):
     (W1, B1, W2, B2, W3, B3, W4, B4) = getparams(params)
 
@@ -76,8 +80,8 @@ def initialise_parameters():
     # W4: [1, 5]
     # B4: [1, 1]
     initializer = keras.initializers.GlorotNormal(seed=1)
-    W1 = tf.Variable(initializer(shape=(5, 5)))
-    B1 = tf.Variable(initializer(shape=(1, 5)))
+    W1 = tf.Variable(initializer(shape=(5, 30)))
+    B1 = tf.Variable(initializer(shape=(1, 30)))
     W2 = tf.Variable(initializer(shape=(4, 5)))
     B2 = tf.Variable(initializer(shape=(1, 4)))
     W3 = tf.Variable(initializer(shape=(5, 4)))
@@ -99,5 +103,3 @@ def slices_from_array(array):
 def normalise(data):
     # tf cast, reshape
     return data
-
-
