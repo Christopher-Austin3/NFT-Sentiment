@@ -11,24 +11,36 @@ def create_ai(x_train, y_train, x_test, y_test):
     y_train = normalise(slices_from_array(y_train))
     x_test = normalise(slices_from_array(x_test))
     y_test = normalise(slices_from_array(y_test))
-    params = initialise_parameters()
+    # params = initialise_parameters()
     # forward_prop(X, params)
 
+def learn(x_train, y_train, x_test, y_test, learning_rate=0.001,
+          epochs=500, minibatch_size=8):
+    params = initialise_parameters()
+    x_train_batch = x_train.batch(minibatch_size)
+    y_train_batch = y_train.batch(minibatch_size)
+    (W1, B1, W2, B2, W3, B3, W4, B4) = getparams(params)
+    sgd = tf.keras.optimizers.SGD(learning_rate)
+
+    for epoch in range(epochs):
+        for (x_minibatch, y_minibatch) in (x_train_batch, y_train_batch):
+            with tf.GradientTape() as t:
+                activation = forward_prop(x_minibatch, params)
+                network_cost = cost(activation, y_minibatch)
+                gradient_changes = t.gradient(network_cost, [W1, B1, W2, B2, W3, B3, W4, B4])
+                sgd.apply_gradients(zip(gradient_changes, [W1, B1, W2, B2, W3, B3, W4, B4]))
+                
 
 def cost(A, y):
     return tf.reduce_mean(tf.keras.losses.binary_crossentropy(A, y))
 
+def getparams(params):
+    return (params['W1'], params['B1'], params['W2'], params['B2'],
+            params['W3'], params['B3'], params['W4'], params['B4'])
 
 # return Z4 not A4, calc lofits and reduce mean
 def forward_prop(X, params):
-    W1 = params['W1']
-    B1 = params['B1']
-    W2 = params['W2']
-    B2 = params['B2']
-    W3 = params['W3']
-    B3 = params['B3']
-    W4 = params['W4']
-    B4 = params['B4']
+    (W1, B1, W2, B2, W3, B3, W4, B4) = getparams(params)
 
     Z1 = tf.add(tf.matmul(W1, X), B1)
     A1 = tf.keras.activations.relu(Z1)
@@ -37,9 +49,9 @@ def forward_prop(X, params):
     Z3 = tf.add(tf.matmul(W3, A2), B3)
     A3 = tf.keras.activations.relu(Z3)
     Z4 = tf.add(tf.matmul(W4, A3), B4)
-    # A4 = tf.keras.activations.relu(Z4)
+    A4 = tf.keras.activations.relu(Z4)
 
-    return Z4
+    return A4
 
 
 def initialise_parameters():
@@ -78,7 +90,9 @@ def normalise(data):
 
 
 def messtest():
-    print(next(iter(slices_from_array([1, 2, 3, 4, 5, 6]))))
+    s = slices_from_array([1, 2, 3, 4, 5, 6]).batch(2)
+    for x in s:
+        print(x)
 
 
 messtest()
