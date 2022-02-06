@@ -1,0 +1,15 @@
+{
+  "keyFile": "keys.json",
+  "rulesAddress": "https://api.twitter.com/2/tweets/search/stream/rules",
+  "streamAddress": "https://api.twitter.com/2/tweets/search/stream",
+  "updateAddress": "https://api.twitter.com/2/tweets",
+  "rulesList": [{"value": "nft", "tag": "mentions nft"}],
+  "tagsList": {
+    "tweet.fields":["created_at","public_metrics","non_public_metrics"],
+    "expansions": "author_id",
+    "user.fields":["created_at","public_metrics","verified"]
+  },
+  "dbName": "nftDatabase.db",
+  "tweetTimeRange": 180,
+  "sentimentUpdateRate": 10
+}
