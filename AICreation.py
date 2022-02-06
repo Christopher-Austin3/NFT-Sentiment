@@ -23,13 +23,16 @@ def learn(x_train, y_train, x_test, y_test, learning_rate=0.001,
     sgd = tf.keras.optimizers.SGD(learning_rate)
 
     for epoch in range(epochs):
+        intermediary_cost = 0
         for (x_minibatch, y_minibatch) in (x_train_batch, y_train_batch):
             with tf.GradientTape() as t:
                 activation = forward_prop(x_minibatch, params)
                 network_cost = cost(activation, y_minibatch)
-                gradient_changes = t.gradient(network_cost, [W1, B1, W2, B2, W3, B3, W4, B4])
-                sgd.apply_gradients(zip(gradient_changes, [W1, B1, W2, B2, W3, B3, W4, B4]))
-                
+            gradient_changes = t.gradient(network_cost, [W1, B1, W2, B2, W3, B3, W4, B4])
+            sgd.apply_gradients(zip(gradient_changes, [W1, B1, W2, B2, W3, B3, W4, B4]))
+            intermediary_cost += network_cost
+            
+
 
 def cost(A, y):
     return tf.reduce_mean(tf.keras.losses.binary_crossentropy(A, y))
