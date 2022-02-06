@@ -16,7 +16,6 @@ def create_ai(x_train, y_train, x_test=[], y_test=[]):
             np.save(f, p.numpy())
 
 
-
 # trains gradients of network. Tests to be added.
 def learn(x_train, y_train, x_test, y_test, learning_rate=0.001,
           epochs=500, minibatch_size=8):
