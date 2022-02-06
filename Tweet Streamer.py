@@ -84,7 +84,7 @@ def stream(reqUrl, authToken, collectionSet, activeTweets):
 # Turns tweet text into a set of included words
 def rawTweet(tweet):
     noPunctuation = tweet.translate(str.maketrans('', '', string.punctuation))
-    split = set(map(lambda u: u.tolower() ,re.split(' \n\t', noPunctuation)))
+    split = set(map(lambda u: u.lower() ,re.split(' \n\t', noPunctuation)))
     return split
 
 # Get the set of collections named by a tweet

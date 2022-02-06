@@ -10,6 +10,6 @@
     "user.fields":["created_at","public_metrics","verified"]
   },
   "dbName": "nftDatabase.db",
-  "tweetTimeRange": 180,
+  "tweetTimeRange": 10,
   "sentimentUpdateRate": 10
 }
