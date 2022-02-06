@@ -5,18 +5,15 @@ import AICreation as aic
 
 # get input data, normalise, call sentiment algorithm
 def predict_sentiment(input_data):
-    normalised_input = aic.normalise(input_data)
-    sentiment = calculate_sentiment(normalised_input)
-    old_sentiment = db.read_sentiment()
-    d_sentiment = linear_reg(old_sentiment, sentiment)
-    db.write_sentiment(sentiment)
+    current_sentiment = calculate_sentiment(input_data)
+    old_sentiments = db.read_sentiment()
+    d_sentiment = linear_reg(old_sentiments, current_sentiment)
+    db.write_sentiment(current_sentiment)
 
 
-
-
-# use AI to calculate sentiment
-def calculate_sentiment():
-    return 0
+# calculate sentiment as a function of input data
+def calculate_sentiment(input_data):
+    return
 
 
 # returns change in sentiment
